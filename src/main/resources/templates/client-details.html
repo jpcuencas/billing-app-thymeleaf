@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/layout :: head"></head>
+<body>
+
+	<header th:replace="layout/layout :: header"></header>
+
+	<div class="container py-4">
+
+		<div class="card bg-light">
+			<div class="card-header" th:text="${title}"></div>
+			<div class="card-body">
+
+				<h4 class="card-title">
+					<a class="btn btn-primary btn-xs" th:href="@{'/bill-new/' + ${client.id}}" th:text="'New bill'"></a>
+				</h4>
+
+				<img th:src="@{/images/avatar.png}" class="img-thumbnail rounded float-left" style="width: 202px; margin-right: 20px;" alt="avatar" />
+
+				<ul class="list-group">
+					<li class="list-group-item active" th:text="${client.name}"></li>
+					<li class="list-group-item" th:text="${client.surname}"></li>
+					<li class="list-group-item" th:text="${client.email}"></li>
+					<li class="list-group-item" th:text="${client.audit.createOn}"></li>
+				</ul>
+
+				<div th:if="${#lists.isEmpty(client.bills)}"
+					class="alert alert-info my-4"
+					th:text="'There is not bills for the client ' + ${client.name} + ' ' + ${client.surname}"></div>
+
+				<table th:if="${not #lists.isEmpty(client.bills)}"
+					class="table table-bordered table-striped my-4">
+					<thead class="thead-inverse">
+						<tr>
+							<th class="text-center">Id</th>
+							<th class="text-center">Description</th>
+							<th class="text-center">Date</th>
+							<th class="text-center">Total</th>
+							<th class="text-center">Show</th>
+							<th class="text-center">Delete</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="bill: ${client.bills}">
+							<td class="text-center" th:text="${bill.id}"></td>
+							<td class="text-center" th:text="${bill.description}"></td>
+							<td class="text-center" th:text="${bill.audit.createOn}"></td>
+							<td class="text-center" th:text="${bill.total}"></td>
+							<td class="text-center" ><a class="btn btn-primary btn-xs" th:href="@{'/bill-details/' + ${bill.id}}" th:text="'Details'"></a></td>
+							<td class="text-center"><a class="btn btn-danger btn-xs" th:href="@{'/bill-delete/' + ${bill.id}}" th:text="'Delete'" onclick="return confirm('¿Are you sure?');"></a></td>
+						</tr>
+					</tbody>
+
+				</table>
+
+			</div>
+		</div>
+
+	</div>
+
+	<footer th:replace="layout/layout :: footer"></footer>
+</body>
+</html>

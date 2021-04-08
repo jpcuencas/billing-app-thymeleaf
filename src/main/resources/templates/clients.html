@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/layout :: head"></head>
+<body>
+
+	<header th:replace="layout/layout :: header"></header>
+
+	<div class="container py-4">
+
+		<div class="card bg-light">
+			<div class="card-header" th:text="${title}"></div>
+			<div class="card-body">
+
+				<h4 class="card-title"><a th:href="@{/client-form}" class="btn btn-primary btn-xs">New client</a></h4>
+				<table class="table table-striped table-bordered">
+					<thead class="thead-inverse">
+						<tr>
+							<th class="text-center">Id</th>
+							<th class="text-center">Name</th>
+							<th class="text-center">Surname</th>
+							<th class="text-center">Email</th>
+							<th class="text-center">Since</th>
+							<th class="text-center">Add New Bill</th>
+							<th class="text-center">Delete Bill</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="client: ${clients}">
+							<td class="text-center"><a class="btn btn-primary btn-xs" th:href="@{'/client-details/' + ${client.id}}" th:text="${client.id}"></a></td>
+							<td class="text-center" th:text="${client.name}"></td>
+							<td class="text-center" th:text="${client.surname}"></td>
+							<td class="text-center" th:text="${client.email}"></td>
+							<td class="text-center" th:text="${client.audit.createOn}"></td>
+							<td class="text-center"><a class="btn btn-success btn-xs" th:href="@{'/bill-new/' + ${client.id}}" th:text="'Add'"></a></td>
+							<td class="text-center"><a class="btn btn-danger btn-xs" th:href="@{'/client-delete/' + ${client.id}}" th:text="'Remove'" onclick="return confirm('Are you sure?');"></a></td>
+						</tr>
+					</tbody>
+
+				</table>
+			</div>
+		</div>
+
+
+	</div>
+
+	<footer th:replace="layout/layout :: footer"></footer>
+</body>
+</html>

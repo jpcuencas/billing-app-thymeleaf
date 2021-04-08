@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/layout :: head"></head>
+<body>
+
+	<header th:replace="layout/layout :: header"></header>
+
+	<div class="container py-4">
+
+
+		<div class="card bg-light">
+			<div class="card-header" th:text="${title}"></div>
+			<div class="card-body">
+
+
+				<h4 class="card-title">
+					<a th:href="@{'/client-details/' + ${bill.client.id}}" class="btn btn-light btn-xs">&laquo; return</a>
+				</h4>
+
+				<ul class="list-group my-2">
+					<li class="list-group-item list-group-item-primary" th:text="'Client'"></li>
+					<li class="list-group-item" th:text="${bill.client.name} + ' ' + ${bill.client.surname}"></li>
+					<li class="list-group-item" th:text="${bill.client.email}"></li>
+				</ul>
+
+				<ul class="list-group my-2">
+					<li class="list-group-item list-group-item-success" th:text="'Bill'"></li>
+					<li class="list-group-item" th:text="'Id: ' + ${bill.id}"></li>
+					<li class="list-group-item" th:text="'Description: ' + ${bill.description}"></li>
+					<li class="list-group-item" th:text="'Date: ' + ${bill.audit.createOn}"></li>
+				</ul>
+				<div class="alert alert-info my-4"
+					th:if="${#lists.isEmpty(bill.lines)}"
+					th:text="'There is not lines in bill ' + ${bill.description}"></div>
+
+				<table th:if="${not #lists.isEmpty(bill.lines)}"
+					class="table table-striped table-hover table-bordered my-3">
+					<thead>
+						<tr>
+							<th class="text-center">Product</th>
+							<th class="text-center">Price</th>
+							<th class="text-center">Quantity</th>
+							<th class="text-center">Total</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="line: ${bill.lines}">
+							<td class="text-center" th:text="${line.product.name}"></td>
+							<td class="text-center" th:text="${line.product.price}"></td>
+							<td class="text-center" th:text="${line.quantity}"></td>
+							<td class="text-center" th:text="${line.calculateAmount()}"></td>
+						</tr>
+					</tbody>
+
+				</table>
+
+				<h5 class="float-right"><span th:text="'Total ' + ${bill.total}"class="badge badge-secondary"></span></h5>
+
+				<div class="card border-info mb-4" style="max-width: 20rem;">
+					<div class="card-header">Observations</div>
+					<div class="card-body">
+						<p class="card-text" th:text="${bill.observation}"
+							th:if="${not #strings.isEmpty(bill.observation)}"></p>
+						<h4 class="card-title"
+							th:if="${#strings.isEmpty(bill.observation)}"
+							th:text="'There is not observations'"></h4>
+					</div>
+				</div>
+
+				<a th:href="@{'/client-details/' + ${bill.client.id}}" class="btn btn-light btn-xs">&laquo; return</a>
+
+			</div>
+		</div>
+
+	</div>
+	<footer th:replace="layout/layout :: footer"></footer>
+</body>
+</html>
